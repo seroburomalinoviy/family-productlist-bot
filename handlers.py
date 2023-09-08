@@ -2,9 +2,11 @@ from abc import ABC, abstractmethod
 
 import telegram as tg
 import telegram.ext as tg_ext
+import logging
 
 import messages
 
+logger = logging.getLogger(__name__)
 
 class BaseHandler(ABC):
     def __init__(self):
