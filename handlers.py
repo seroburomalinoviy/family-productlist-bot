@@ -25,13 +25,14 @@ class BaseHandler(ABC):
 
 class StartHandler(BaseHandler):
     async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
+        logger.info('логи идут')
         await update.message.reply_text("привет чудик")
 
 
 class ChannelMessageHandler_products(BaseHandler):
     async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
         markup = tg.InlineKeyboardMarkup([[tg.InlineKeyboardButton('markall', callback_data='markall')]])
-        message = update.channel_post.edit_text(self.message.edit(update.channel_post.text), parse_mode='MarkdownV2', reply_markup=markup)
+        message = update.channel_post.edit_text(self.message.edit(update.channel_post.text), reply_markup=markup)
         await message
 
 

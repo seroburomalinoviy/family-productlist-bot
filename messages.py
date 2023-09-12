@@ -60,11 +60,11 @@ class BaseMessages(ABC):
 class ChannelMessages(BaseMessages):
     def edit(self, text: str) -> str:
 
-        txt = text.split('\n')[1:]
-        template = f'''*Список продуктов от {date.today(): %d %b \(%A\)}*\n\n'''
+        txt = text.split('\n')[1:] # skip 'продукты'
+        template = f'''Список продуктов от {date.today(): %d %b (%A)}\n\n'''
         for i in txt:
-            template += f'\- {i.capitalize():<20}\n'
-        template += '\n\#список\_покупок'
+            template += f'- {i.capitalize()}\n'
+        template += '\n#список_покупок'
 
         return template
 
