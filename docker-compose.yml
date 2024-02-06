@@ -1,0 +1,7 @@
+version: '3'
+services:
+  bot:
+    build: .
+    container_name: family_bot
+    restart: always
+    command: sh -с  "puthon3 main.py"
