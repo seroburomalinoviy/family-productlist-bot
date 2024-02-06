@@ -4,4 +4,4 @@ services:
     build: .
     container_name: family_bot
     restart: always
-    command: sh -с  "puthon3 main.py"
+    command: sh -c  "puthon3 main.py"
