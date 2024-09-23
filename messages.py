@@ -53,12 +53,12 @@ class PersonalCommands(BaseCommands):
 
 class BaseMessages(ABC):
     @abstractmethod
-    async def edit(self, text: str, user_name: str) -> str:
+    async def edit(self, text: str) -> str:
         pass
 
 
 class ChannelMessages(BaseMessages):
-    def edit(self, text: str, user_name: str) -> str:
+    def edit(self, text: str) -> str:
 
         txt = text.split('\n')[1:]
         template = f'''Нужно купить:\n\n'''
