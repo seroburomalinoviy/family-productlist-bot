@@ -31,7 +31,7 @@ class StartHandler(BaseHandler):
 
 class ChannelMessageHandler_products(BaseHandler):
     async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
-        markup = tg.InlineKeyboardMarkup([[tg.InlineKeyboardButton('markall', callback_data='markall')]])
+        markup = tg.InlineKeyboardMarkup([[tg.InlineKeyboardButton('Отметить всё', callback_data='markall')]])
         message = update.channel_post.edit_text(self.message.edit(update.channel_post.text), reply_markup=markup)
         await message
 
@@ -43,5 +43,5 @@ class ChannelMessageHandler_markall_button(BaseHandler):
 
 def setup_handlers(app):
     app.add_handler(tg_ext.CommandHandler("start", StartHandler()))
-    app.add_handler(tg_ext.MessageHandler(tg_ext.filters.Regex('^п|Продукты') & ~tg_ext.filters.COMMAND, ChannelMessageHandler_products()))
+    app.add_handler(tg_ext.MessageHandler(tg_ext.filters.Regex('^к|Купить') & ~tg_ext.filters.COMMAND, ChannelMessageHandler_products()))
     app.add_handler(tg.ext.CallbackQueryHandler(ChannelMessageHandler_markall_button(), pattern='markall'))
