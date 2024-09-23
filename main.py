@@ -2,7 +2,7 @@ import telegram.ext as tg_ext
 import tomllib
 import logging
 
-logging.basicConfig(filename='bot.log', level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 from handlers import setup_handlers
