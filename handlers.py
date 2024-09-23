@@ -43,5 +43,5 @@ class ChannelMessageHandler_markall_button(BaseHandler):
 
 def setup_handlers(app):
     app.add_handler(tg_ext.CommandHandler("start", StartHandler()))
-    app.add_handler(tg_ext.MessageHandler(tg_ext.filters.Regex('^к|Купить') & ~tg_ext.filters.COMMAND, ChannelMessageHandler_products()))
+    app.add_handler(tg_ext.MessageHandler(tg_ext.filters.Regex('^(купить)|^(Купить)') & ~tg_ext.filters.COMMAND, ChannelMessageHandler_products()))
     app.add_handler(tg.ext.CallbackQueryHandler(ChannelMessageHandler_markall_button(), pattern='markall'))
