@@ -3,6 +3,7 @@ import tomllib
 import logging
 
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 from handlers import setup_handlers
