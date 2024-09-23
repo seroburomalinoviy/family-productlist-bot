@@ -53,15 +53,15 @@ class PersonalCommands(BaseCommands):
 
 class BaseMessages(ABC):
     @abstractmethod
-    async def edit(self, text: str) -> str:
+    async def edit(self, text: str, user_name: str) -> str:
         pass
 
 
 class ChannelMessages(BaseMessages):
-    def edit(self, text: str) -> str:
+    def edit(self, text: str, user_name: str) -> str:
 
-        txt = text.split('\n')[1:] # skip 'продукты'
-        template = f'''Список продуктов от {date.today(): %d %b (%A)}\n\n'''
+        txt = text.split('\n')[1:]
+        template = f'''Нужно купить:\n\n'''
         for i in txt:
             template += f'- {i.capitalize()}\n'
         template += '\n#список_покупок'
