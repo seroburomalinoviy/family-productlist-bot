@@ -1,6 +1,9 @@
+from os import environ
 import telegram.ext as tg_ext
-import tomllib
 import logging
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -10,8 +13,7 @@ from handlers import setup_handlers
 
 
 def main():
-    with open("config.toml", "rb") as f:
-        TOKEN = tomllib.load(f)["bot"]["token"]
+    TOKEN = environ.get("TOKEN_BOT")
 
     logger.info('Start bot')
 

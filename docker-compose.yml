@@ -1,7 +1,8 @@
-version: '3'
 services:
   bot:
     build: .
     container_name: family_bot
     restart: always
     command: sh -c  "python3 main.py"
+    env_file:
+      - .env
