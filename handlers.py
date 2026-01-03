@@ -61,7 +61,8 @@ class ChannelMessageHandler_markall_button(BaseHandler):
 def setup_handlers(app):
     start_purchases_filter = ""
     for word in start_purchases:
-        start_purchases_filter += f"^({word})|^({word.capitalize()})"
+        start_purchases_filter += f"^({word})|^({word.capitalize()})|"
+    start_purchases_filter = start_purchases_filter[:-1]
 
     app.add_handler(tg_ext.CommandHandler("start", StartHandler()))
     app.add_handler(
