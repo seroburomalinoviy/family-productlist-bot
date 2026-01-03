@@ -5,43 +5,74 @@ import telegram.ext as tg_ext
 import logging
 
 import messages
+from trigger_words import start_purchases
 
 logger = logging.getLogger(__name__)
+
 
 class BaseHandler(ABC):
     def __init__(self):
         self.user = None
         self.message = None
 
-    async def __call__(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE) -> None:
+    async def __call__(
+        self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE
+    ) -> None:
         self.user = update.effective_user
         self.message = messages.ChannelMessages()
         await self.handle(update, context)
 
     @abstractmethod
-    async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
+    async def handle(
+        self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE
+    ):
         pass
 
 
 class StartHandler(BaseHandler):
-    async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
-        logger.info('логи идут')
+    async def handle(
+        self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE
+    ):
+        logger.info("логи идут")
         await update.message.reply_text("привет чудик")
 
 
 class ChannelMessageHandler_products(BaseHandler):
-    async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
-        markup = tg.InlineKeyboardMarkup([[tg.InlineKeyboardButton('Отметить всё', callback_data='markall')]])
-        message = update.channel_post.edit_text(self.message.edit(update.channel_post.text), reply_markup=markup)
+    async def handle(
+        self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE
+    ):
+        markup = tg.InlineKeyboardMarkup(
+            [[tg.InlineKeyboardButton("Отметить всё", callback_data="markall")]]
+        )
+        message = update.channel_post.edit_text(
+            self.message.edit(update.channel_post.text), reply_markup=markup
+        )
         await message
 
 
 class ChannelMessageHandler_markall_button(BaseHandler):
-    async def handle(self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE):
+    async def handle(
+        self, update: tg.Update, context: tg_ext.ContextTypes.DEFAULT_TYPE
+    ):
         await update.callback_query.answer()
         await update.callback_query.delete_message()
 
+
 def setup_handlers(app):
+    start_purchases_filter = ""
+    for word in start_purchases:
+        start_purchases_filter += f"^({word})|^({word.capitalize()})"
+
     app.add_handler(tg_ext.CommandHandler("start", StartHandler()))
-    app.add_handler(tg_ext.MessageHandler(tg_ext.filters.Regex('^(купить)|^(Купить)') & ~tg_ext.filters.COMMAND, ChannelMessageHandler_products()))
-    app.add_handler(tg.ext.CallbackQueryHandler(ChannelMessageHandler_markall_button(), pattern='markall'))
+    app.add_handler(
+        tg_ext.MessageHandler(
+            tg_ext.filters.Regex(start_purchases_filter) & ~tg_ext.filters.COMMAND,
+            ChannelMessageHandler_products(),
+        )
+    )
+    app.add_handler(
+        tg.ext.CallbackQueryHandler(
+            ChannelMessageHandler_markall_button(), pattern="markall"
+        )
+    )
+

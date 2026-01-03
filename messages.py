@@ -1,9 +1,7 @@
 from abc import ABC, abstractmethod
 
-import telegram as tg
-import telegram.ext as tg_ext
 
-from datetime import date
+from trigger_words import start_purchases
 
 
 class BaseCommands(ABC):
@@ -22,10 +20,10 @@ class BaseCommands(ABC):
 
 class ChannelCommands(BaseCommands):
     async def start(self):
-        return 'Привет, я твой личный секретарь в канале Мы!\nМоя задача составлять списки покупок.'
+        return "Привет, я твой личный секретарь в канале Мы!\nМоя задача составлять списки покупок."
 
     async def help(self):
-        return 'Напиши в канал сообщение которое будет начинаться с `продукты`, на каждой новой строчке запиши продукт, отправсь это сообщение в канал и ты увидишь супер список!.'
+        return f"Напиши в канал сообщение которое будет начинаться с {', '.join(start_purchases)}, на каждой новой строчке запиши продукт, отправсь это сообщение в канал и ты увидишь супер список!."
 
     async def cancel(self):
         pass
@@ -42,13 +40,13 @@ class ChannelCommands(BaseCommands):
 
 class PersonalCommands(BaseCommands):
     async def start(self):
-        return 'Привет.'
+        return "Привет."
 
     async def help(self):
-        return 'Напиши в мне'
+        return "Напиши мне @sergeevid"
 
     async def cancel(self):
-        return 'Отмена'
+        return "Отмена"
 
 
 class BaseMessages(ABC):
@@ -58,13 +56,11 @@ class BaseMessages(ABC):
 
 
 class ChannelMessages(BaseMessages):
-    def edit(self, text: str) -> str:
-
-        txt = text.split('\n')[1:]
-        template = f'''Нужно купить:\n\n'''
+    def edit(self, text: str):
+        txt = text.split("\n")[1:]
+        template = """Нужно купить:\n\n"""
         for i in txt:
-            template += f'- {i.capitalize()}\n'
-        template += '\n#список_покупок'
+            template += f"- {i.capitalize()}\n"
+        template += "\n#список_покупок"
 
         return template
-
